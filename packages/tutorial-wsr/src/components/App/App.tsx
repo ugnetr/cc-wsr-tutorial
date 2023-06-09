@@ -10,11 +10,13 @@ import {
   Dropdown,
   FormField,
   Heading,
+  IconButton,
   Input,
   Layout,
   Page,
   Text,
 } from "wix-style-react";
+import DeleteSmall from "wix-ui-icons-common/DeleteSmall";
 
 interface AppProps extends WithTranslation {}
 
@@ -70,14 +72,23 @@ class App extends React.Component<AppProps> {
                     </Cell>
                     <Cell>
                       <FormField label="Favorite color">
-                        <Dropdown
-                          placeholder="Choose a color"
-                          options={[
-                            { id: 0, value: "Red" },
-                            { id: 1, value: "Green" },
-                            { id: 2, value: "Blue" },
-                          ]}
-                        />
+                        <Layout>
+                          <Cell span={10}>
+                            <Dropdown
+                              placeholder="Choose a color"
+                              options={[
+                                { id: 0, value: "Red" },
+                                { id: 1, value: "Green" },
+                                { id: 2, value: "Blue" },
+                              ]}
+                            />
+                          </Cell>
+                          <Cell span={2}>
+                            <IconButton priority="secondary" disabled>
+                              <DeleteSmall />
+                            </IconButton>
+                          </Cell>
+                        </Layout>
                       </FormField>
                     </Cell>
                     <Cell>
