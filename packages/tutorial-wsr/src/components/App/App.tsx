@@ -1,36 +1,60 @@
-import React from "react";
-import { FormField, Input, Card, Layout, Cell } from "wix-style-react";
+import React from 'react';
+import { Layout, Cell, Card, FormField, Input, Dropdown } from 'wix-style-react';
 
-export default () => {
-  const [charCount, setCharCount] = React.useState(0);
-  const [value, setValue] = React.useState("");
-
-  const handleOnChange = (value: string) => {
-    setValue(value);
-    setCharCount(value.length);
+export default class extends React.Component {
+  state = {
+    inputValue: '',
+    dropdownSelectedId: -1,
   };
-
-  return (
-    <Card>
-      <Card.Header title="First card" />
-      <Card.Divider />
-      <Card.Content>
-        <Layout>
-          <Cell span={4}>
-            <FormField
-              label="An input field"
-              required
-              infoContent="Help me fill the field"
-              charCount={5 - charCount}
-            >
-              <Input
-                value={value}
-                onChange={(event) => handleOnChange(event.target.value)}
-              />
-            </FormField>
-          </Cell>
-        </Layout>
-      </Card.Content>
-    </Card>
-  );
-};
+  render() {
+    return (
+      <Layout>
+        <Cell>
+          <Card>
+            <Card.Header title="Inputs and Selection" />
+            <Card.Content>
+              <Layout>
+                <Cell span={8}>
+                  <FormField
+                    label="<Input/> - A simple Input"
+                    infoContent="Use this for regular text input"
+                  >
+                    <Input
+                      value={this.state.inputValue}
+                      onChange={e =>
+                        this.setState({ inputValue: e.target.value })
+                      }
+                    />
+                  </FormField>
+                </Cell>
+                <Cell span={8}>
+                  <FormField
+                    label="<Dropdown/> - A simple select component"
+                    infoContent="Use this to pick a value from a set"
+                  >
+                    <Dropdown
+                      selectedId={this.state.dropdownSelectedId}
+                      onSelect={option =>
+                        this.setState({ dropdownSelectedId: option.id })
+                      }
+                      options={[
+                        {
+                          id: 0,
+                          value: 'first option',
+                        },
+                        {
+                          id: 1,
+                          value: 'second option',
+                        },
+                      ]}
+                    />
+                  </FormField>
+                </Cell>
+              </Layout>
+            </Card.Content>
+          </Card>
+        </Cell>
+      </Layout>
+    );
+  }
+}
