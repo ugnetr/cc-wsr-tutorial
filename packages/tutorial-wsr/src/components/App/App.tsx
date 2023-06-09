@@ -1,6 +1,14 @@
 import React from "react";
 import { withTranslation, WithTranslation } from "@wix/wix-i18n-config";
-import { Box, Breadcrumbs, Button, Cell, Layout, Page } from "wix-style-react";
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Card,
+  Cell,
+  Layout,
+  Page,
+} from "wix-style-react";
 
 interface AppProps extends WithTranslation {}
 
@@ -32,11 +40,34 @@ class App extends React.Component<AppProps> {
         />
         <Page.Content>
           <Layout>
-            <Cell span={8}>General info</Cell>
+            <Cell span={8}>
+              <Card>
+                <Card.Header title="General info" />
+                <Card.Divider />
+                <Card.Content>{/* Form fields */}</Card.Content>
+              </Card>
+            </Cell>
+
             <Cell span={4}>
               <Layout>
-                <Cell>Role details</Cell>
-                <Cell>Saved data</Cell>
+                <Cell>
+                  <Card>
+                    <Card.Header
+                      title="Role details"
+                      suffix={<Button priority="secondary">Edit</Button>}
+                    />
+                    <Card.Divider />
+                    <Card.Content>{/* Form fields */}</Card.Content>
+                  </Card>
+                </Cell>
+
+                <Cell>
+                  <Card>
+                    <Card.Header title="Saved data" />
+                    <Card.Divider />
+                    <Card.Content>{/* Form fields */}</Card.Content>
+                  </Card>
+                </Cell>
               </Layout>
             </Cell>
           </Layout>
