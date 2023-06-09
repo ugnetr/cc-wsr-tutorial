@@ -79,6 +79,7 @@ const App: FunctionComponent = () => {
           actionsBar={
             <Box gap="SP2">
               <Button
+                dataHook="clearButton"
                 skin="inverted"
                 onClick={handleClearForm}
                 disabled={
@@ -212,7 +213,10 @@ const App: FunctionComponent = () => {
                 {submittedValues && (
                   <Cell>
                     <Card>
-                      <Card.Header title="Saved data" dataHook="savedDataHeader" />
+                      <Card.Header
+                        title="Saved data"
+                        dataHook="savedDataHeader"
+                      />
                       <Card.Divider />
                       <Card.Content>
                         <Layout>
