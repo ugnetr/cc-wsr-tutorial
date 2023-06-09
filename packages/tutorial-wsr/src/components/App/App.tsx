@@ -1,21 +1,73 @@
-import React from 'react';
-import { withTranslation, WithTranslation } from '@wix/wix-i18n-config';
-import s from './App.scss';
+import React from "react";
+import {
+  Layout,
+  Cell,
+  Card,
+  FormField,
+  Input,
+  Dropdown,
+} from "wix-style-react";
 
-interface AppProps extends WithTranslation {}
-
-class App extends React.Component<AppProps> {
+export default class extends React.Component {
+  state = {
+    inputValue: "",
+    dropdownSelectedId: -1,
+  };
   render() {
-    const { t } = this.props;
-
     return (
-      <div className={s.root}>
-        <h2 className={s.title} data-hook="app-title">
-          {t('app.title', { who: 'Yoshi' })}
-        </h2>
-      </div>
+      <Layout>
+        <Cell>
+          <Card>
+            <Card.Header title="Inputs and Selection" />
+            <Card.Content>
+              <Layout>
+                <Cell span={8}>
+                  <FormField
+                    label="<Input/> - A simple Input"
+                    infoContent="Use this for regular text input"
+                    status="error"
+                    statusMessage="This is an error message."
+                  >
+                    <Input
+                      value={this.state.inputValue}
+                      onChange={(e) =>
+                        this.setState({ inputValue: e.target.value })
+                      }
+                    />
+                  </FormField>
+                </Cell>
+                <Cell span={8}>
+                  <FormField
+                    label="<Dropdown/> - A simple select component"
+                    infoContent="Use this to pick a value from a set"
+                  >
+                    <Dropdown
+                      selectedId={this.state.dropdownSelectedId}
+                      onSelect={(option) =>
+                        this.setState({ dropdownSelectedId: option.id })
+                      }
+                      options={[
+                        {
+                          id: 0,
+                          value: "first option",
+                        },
+                        {
+                          id: 1,
+                          value: "second option",
+                        },
+                        {
+                          id: 2,
+                          value: "Third option",
+                        },
+                      ]}
+                    />
+                  </FormField>
+                </Cell>
+              </Layout>
+            </Card.Content>
+          </Card>
+        </Cell>
+      </Layout>
     );
   }
 }
-
-export default withTranslation()(App);
