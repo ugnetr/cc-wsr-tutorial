@@ -55,6 +55,10 @@ export default class extends React.Component {
                           id: 1,
                           value: "second option",
                         },
+                        {
+                          id: 2,
+                          value: "Third option",
+                        },
                       ]}
                     />
                   </FormField>
