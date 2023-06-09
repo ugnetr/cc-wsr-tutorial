@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { ChangeEvent, FunctionComponent, useState } from "react";
 import { withTranslation, WithTranslation } from "@wix/wix-i18n-config";
 import {
   AddItem,
@@ -18,13 +18,57 @@ import {
 } from "wix-style-react";
 import DeleteSmall from "wix-ui-icons-common/DeleteSmall";
 
+type FormInputData = { firstName: string; lastName: string };
+
+type Color = "Red" | "Green" | "Blue";
+
+type ColorOption = { id: string; value: Color };
+
+const colorOptions: ColorOption[] = [
+  { id: '0', value: "Red" },
+  { id: '1', value: "Green" },
+  { id: '2', value: "Blue" },
+];
+
 const App: FunctionComponent = () => {
+  const [formInputData, setInputFormData] = useState<FormInputData>({
+    firstName: "",
+    lastName: "",
+  });
+
+  const [favoriteColor, setFavoriteColor] = useState<string>("");
+
+  const handleClearColor = () => setFavoriteColor("");
+
+  const handleClearForm = () => {
+    setInputFormData({
+      firstName: "",
+      lastName: "",
+    });
+    handleClearColor();
+  };
+
+  const handleFormInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputFormData((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    if(!formInputData.firstName || !formInputData.lastName) return;
+
+
+  };
+
   return (
     <Page>
       <Page.Header
         actionsBar={
           <Box gap="SP2">
-            <Button skin="inverted">Clear</Button>
+            <Button skin="inverted" onClick={handleClearForm}>
+              Clear
+            </Button>
             <Button>Submit</Button>
           </Box>
         }
@@ -51,12 +95,20 @@ const App: FunctionComponent = () => {
                 <Layout>
                   <Cell span={6}>
                     <FormField label="First name" required>
-                      <Input />
+                      <Input
+                        name="firstName"
+                        value={formInputData.firstName}
+                        onChange={handleFormInputChange}
+                      />
                     </FormField>
                   </Cell>
                   <Cell span={6}>
                     <FormField label="Last name" required>
-                      <Input />
+                      <Input
+                        name="lastName"
+                        value={formInputData.lastName}
+                        onChange={handleFormInputChange}
+                      />
                     </FormField>
                   </Cell>
 
@@ -71,15 +123,19 @@ const App: FunctionComponent = () => {
                         <Cell span={10}>
                           <Dropdown
                             placeholder="Choose a color"
-                            options={[
-                              { id: 0, value: "Red" },
-                              { id: 1, value: "Green" },
-                              { id: 2, value: "Blue" },
-                            ]}
+                            options={colorOptions}
+                            selectedId={favoriteColor}
+                            onSelect={(option) =>
+                              setFavoriteColor(option.id as string)
+                            }
                           />
                         </Cell>
                         <Cell span={2}>
-                          <IconButton priority="secondary" disabled>
+                          <IconButton
+                            priority="secondary"
+                            onClick={handleClearColor}
+                            disabled
+                          >
                             <DeleteSmall />
                           </IconButton>
                         </Cell>
