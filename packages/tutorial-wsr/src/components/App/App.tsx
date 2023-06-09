@@ -25,9 +25,9 @@ type Color = "Red" | "Green" | "Blue";
 type ColorOption = { id: string; value: Color };
 
 const colorOptions: ColorOption[] = [
-  { id: '0', value: "Red" },
-  { id: '1', value: "Green" },
-  { id: '2', value: "Blue" },
+  { id: "0", value: "Red" },
+  { id: "1", value: "Green" },
+  { id: "2", value: "Blue" },
 ];
 
 const App: FunctionComponent = () => {
@@ -56,9 +56,9 @@ const App: FunctionComponent = () => {
   };
 
   const handleSubmit = () => {
-    if(!formInputData.firstName || !formInputData.lastName) return;
+    if (!formInputData.firstName || !formInputData.lastName) return;
 
-
+    // Handle submit
   };
 
   return (
@@ -66,10 +66,23 @@ const App: FunctionComponent = () => {
       <Page.Header
         actionsBar={
           <Box gap="SP2">
-            <Button skin="inverted" onClick={handleClearForm}>
+            <Button
+              skin="inverted"
+              onClick={handleClearForm}
+              disabled={
+                !formInputData.firstName &&
+                !formInputData.lastName &&
+                !favoriteColor
+              }
+            >
               Clear
             </Button>
-            <Button>Submit</Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={!formInputData.firstName && !formInputData.lastName}
+            >
+              Submit
+            </Button>
           </Box>
         }
         breadcrumbs={
@@ -79,10 +92,8 @@ const App: FunctionComponent = () => {
               { id: "1", value: "Root Page" },
               { id: "2", value: "WSR Form" },
             ]}
-            onClick={() => {}}
           />
         }
-        onBackClicked={() => {}}
         title="WSR Form"
       />
       <Page.Content>
@@ -134,7 +145,7 @@ const App: FunctionComponent = () => {
                           <IconButton
                             priority="secondary"
                             onClick={handleClearColor}
-                            disabled
+                            disabled={!favoriteColor}
                           >
                             <DeleteSmall />
                           </IconButton>
@@ -177,14 +188,6 @@ const App: FunctionComponent = () => {
                   </Card.Content>
                 </Card>
               </Cell>
-
-              {/* <Cell>
-                  <Card>
-                    <Card.Header title="Saved data" />
-                    <Card.Divider />
-                    <Card.Content></Card.Content>
-                  </Card>
-                </Cell> */}
             </Layout>
           </Cell>
         </Layout>
