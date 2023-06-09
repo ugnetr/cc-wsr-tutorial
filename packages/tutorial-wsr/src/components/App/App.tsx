@@ -90,6 +90,7 @@ const App: FunctionComponent = () => {
                 Clear
               </Button>
               <Button
+                dataHook="submitButton"
                 onClick={handleSubmit}
                 disabled={!formInputData.firstName && !formInputData.lastName}
               >
@@ -119,6 +120,7 @@ const App: FunctionComponent = () => {
                     <Cell span={6}>
                       <FormField label="First name" required>
                         <Input
+                          dataHook="firstNameInput"
                           name="firstName"
                           value={formInputData.firstName}
                           onChange={handleFormInputChange}
@@ -128,6 +130,7 @@ const App: FunctionComponent = () => {
                     <Cell span={6}>
                       <FormField label="Last name" required>
                         <Input
+                          dataHook="lastNameInput"
                           name="lastName"
                           value={formInputData.lastName}
                           onChange={handleFormInputChange}
@@ -145,6 +148,7 @@ const App: FunctionComponent = () => {
                         <Layout>
                           <Cell span={10}>
                             <Dropdown
+                              dataHook="favoriteColorDropdown"
                               placeholder="Choose a color"
                               options={colorOptions}
                               selectedId={favoriteColor}
@@ -208,7 +212,7 @@ const App: FunctionComponent = () => {
                 {submittedValues && (
                   <Cell>
                     <Card>
-                      <Card.Header title="Saved data" />
+                      <Card.Header title="Saved data" dataHook="savedDataHeader" />
                       <Card.Divider />
                       <Card.Content>
                         <Layout>
