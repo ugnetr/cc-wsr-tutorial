@@ -1,21 +1,108 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { render } from '@testing-library/react';
-import { I18nextProvider } from '@wix/wix-i18n-config';
-import i18n from '../__mocks__/i18n';
 import App from './App';
+import {
+  ButtonTestkit,
+  InputTestkit,
+  DropdownTestkit,
+  CardHeaderTestkit,
+} from 'wix-style-react/dist/testkit';
 
 describe('App', () => {
-  it('renders a title correctly', async () => {
-    const { findByTestId } = render(
-      <Suspense fallback="...loading">
-        <I18nextProvider i18n={i18n}>
-          <App />
-        </I18nextProvider>
-      </Suspense>,
-    );
+  it('should submit the form and display saved data', async () => {
+    const { baseElement } = render(<App />);
 
-    const el = await findByTestId('app-title');
+    const firstNameInputTestkit = InputTestkit({
+      wrapper: baseElement,
+      dataHook: "firstNameInput",
+    });
+    const lastNameInputTestkit = InputTestkit({
+      wrapper: baseElement,
+      dataHook: "lastNameInput",
+    });
+    const colorDropdownTestkit = DropdownTestkit({
+      wrapper: baseElement,
+      dataHook: "favoriteColorDropdown",
+    });
+    const submitButtonTestkit = ButtonTestkit({
+      wrapper: baseElement,
+      dataHook: "submitButton",
+    });
 
-    expect(el.textContent).toBe('app.title');
+    await firstNameInputTestkit.enterText('Ugne');
+    await lastNameInputTestkit.enterText('Trakimaite');
+    await colorDropdownTestkit.driver.selectOptionById(2);
+
+    await submitButtonTestkit.click();
+
+    const SavedDataCardHeaderTestkit = CardHeaderTestkit({
+      wrapper: baseElement,
+      dataHook: "savedDataHeader",
+    });
+
+    expect(await SavedDataCardHeaderTestkit.title()).toEqual('Saved data');
+  });
+
+  it('should not submit the form if required field is missing', async () => {
+    const { baseElement } = render(<App />);
+
+    const firstNameInputTestkit = InputTestkit({
+      wrapper: baseElement,
+      dataHook: "firstNameInput",
+    });
+    const colorDropdownTestkit = DropdownTestkit({
+      wrapper: baseElement,
+      dataHook: "favoriteColorDropdown",
+    });
+    const submitButtonTestkit = ButtonTestkit({
+      wrapper: baseElement,
+      dataHook: "submitButton",
+    });
+
+    await firstNameInputTestkit.enterText('Ugne');
+    await colorDropdownTestkit.driver.selectOptionById(2);
+
+    await submitButtonTestkit.click();
+
+    const SavedDataCardHeaderTestkit = CardHeaderTestkit({
+      wrapper: baseElement,
+      dataHook: "savedDataHeader",
+    });
+
+    expect(await SavedDataCardHeaderTestkit.title()).not.toEqual('Saved data');
+  });
+
+  it('should clesr the form when clear button is pressed', async () => {
+    const { baseElement } = render(<App />);
+
+    const firstNameInputTestkit = InputTestkit({
+      wrapper: baseElement,
+      dataHook: "firstNameInput",
+    });
+    const lastNameInputTestkit = InputTestkit({
+      wrapper: baseElement,
+      dataHook: "lastNameInput",
+    });
+    const colorDropdownTestkit = DropdownTestkit({
+      wrapper: baseElement,
+      dataHook: "favoriteColorDropdown",
+    });
+    const clearButtonTestkit = ButtonTestkit({
+      wrapper: baseElement,
+      dataHook: "clearButton",
+    });
+
+    await firstNameInputTestkit.enterText('Ugne');
+    await lastNameInputTestkit.enterText('Trakimaite');
+    await colorDropdownTestkit.driver.selectOptionById(2);
+
+    await clearButtonTestkit.click();
+
+    const SavedDataCardHeaderTestkit = CardHeaderTestkit({
+      wrapper: baseElement,
+      dataHook: "savedDataHeader",
+    });
+
+    expect(await SavedDataCardHeaderTestkit.title()).not.toEqual('Saved data');
   });
 });
