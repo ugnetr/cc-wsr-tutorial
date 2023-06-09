@@ -1,9 +1,16 @@
-import React from 'react';
-import { Layout, Cell, Card, FormField, Input, Dropdown } from 'wix-style-react';
+import React from "react";
+import {
+  Layout,
+  Cell,
+  Card,
+  FormField,
+  Input,
+  Dropdown,
+} from "wix-style-react";
 
 export default class extends React.Component {
   state = {
-    inputValue: '',
+    inputValue: "",
     dropdownSelectedId: -1,
   };
   render() {
@@ -18,10 +25,12 @@ export default class extends React.Component {
                   <FormField
                     label="<Input/> - A simple Input"
                     infoContent="Use this for regular text input"
+                    status="error"
+                    statusMessage="This is an error message."
                   >
                     <Input
                       value={this.state.inputValue}
-                      onChange={e =>
+                      onChange={(e) =>
                         this.setState({ inputValue: e.target.value })
                       }
                     />
@@ -34,17 +43,17 @@ export default class extends React.Component {
                   >
                     <Dropdown
                       selectedId={this.state.dropdownSelectedId}
-                      onSelect={option =>
+                      onSelect={(option) =>
                         this.setState({ dropdownSelectedId: option.id })
                       }
                       options={[
                         {
                           id: 0,
-                          value: 'first option',
+                          value: "first option",
                         },
                         {
                           id: 1,
-                          value: 'second option',
+                          value: "second option",
                         },
                       ]}
                     />
