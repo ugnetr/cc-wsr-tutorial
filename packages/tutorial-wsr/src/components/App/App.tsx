@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FunctionComponent, useState } from "react";
-import { withTranslation, WithTranslation } from "@wix/wix-i18n-config";
+import { withTranslation } from "@wix/wix-i18n-config";
 import {
   AddItem,
   Box,
@@ -20,6 +20,8 @@ import DeleteSmall from "wix-ui-icons-common/DeleteSmall";
 
 type FormInputData = { firstName: string; lastName: string };
 
+type FormData = FormInputData & { favoriteColor: Color | undefined };
+
 type Color = "Red" | "Green" | "Blue";
 
 type ColorOption = { id: string; value: Color };
@@ -37,6 +39,7 @@ const App: FunctionComponent = () => {
   });
 
   const [favoriteColor, setFavoriteColor] = useState<string>("");
+  const [submittedValues, setSubmittedValues] = useState<FormData>();
 
   const handleClearColor = () => setFavoriteColor("");
 
@@ -59,6 +62,13 @@ const App: FunctionComponent = () => {
     if (!formInputData.firstName || !formInputData.lastName) return;
 
     // Handle submit
+    setSubmittedValues({
+      ...formInputData,
+      favoriteColor: colorOptions.find((option) => option.id === favoriteColor)
+        ?.value,
+    });
+
+    handleClearForm();
   };
 
   return (
@@ -167,7 +177,11 @@ const App: FunctionComponent = () => {
                 <Card>
                   <Card.Header
                     title="Role details"
-                    suffix={<Button priority="secondary">Edit</Button>}
+                    suffix={
+                      <Button priority="secondary" disabled>
+                        Edit
+                      </Button>
+                    }
                   />
                   <Card.Divider />
                   <Card.Content>
@@ -188,6 +202,42 @@ const App: FunctionComponent = () => {
                   </Card.Content>
                 </Card>
               </Cell>
+
+              {submittedValues && (
+                <Cell>
+                  <Card>
+                    <Card.Header title="Saved data" />
+                    <Card.Divider />
+                    <Card.Content>
+                      <Layout>
+                        {[
+                          {
+                            title: "First name",
+                            value: submittedValues.firstName,
+                          },
+                          {
+                            title: "Last name",
+                            value: submittedValues.lastName,
+                          },
+                          {
+                            title: "Favorite color",
+                            value: submittedValues.favoriteColor,
+                          },
+                        ]
+                          .filter(({ value }) => !!value)
+                          .map(({ title, value }) => (
+                            <Cell key={title}>
+                              <Heading size="extraTiny" autoCapitalize="true">
+                                {title}
+                              </Heading>
+                              <Text>{value}</Text>
+                            </Cell>
+                          ))}
+                      </Layout>
+                    </Card.Content>
+                  </Card>
+                </Cell>
+              )}
             </Layout>
           </Cell>
         </Layout>
