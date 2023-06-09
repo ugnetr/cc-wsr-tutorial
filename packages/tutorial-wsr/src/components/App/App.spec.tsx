@@ -1,21 +1,22 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import React from "react";
+import { render } from "@testing-library/react";
+import App from "./App";
 import {
   ButtonTestkit,
   InputTestkit,
   DropdownTestkit,
   CardHeaderTestkit,
-} from 'wix-style-react/dist/testkit';
+} from "wix-style-react/dist/testkit";
 
-describe('App', () => {
-  it('should submit the form and display saved data', async () => {
+describe("App", () => {
+  it("should submit the form and display saved data", async () => {
     const { baseElement } = render(<App />);
 
     const firstNameInputTestkit = InputTestkit({
       wrapper: baseElement,
       dataHook: "firstNameInput",
     });
+
     const lastNameInputTestkit = InputTestkit({
       wrapper: baseElement,
       dataHook: "lastNameInput",
@@ -29,8 +30,8 @@ describe('App', () => {
       dataHook: "submitButton",
     });
 
-    await firstNameInputTestkit.enterText('Ugne');
-    await lastNameInputTestkit.enterText('Trakimaite');
+    await firstNameInputTestkit.enterText("Ugne");
+    await lastNameInputTestkit.enterText("Trakimaite");
     await colorDropdownTestkit.driver.selectOptionById(2);
 
     await submitButtonTestkit.click();
@@ -40,10 +41,10 @@ describe('App', () => {
       dataHook: "savedDataHeader",
     });
 
-    expect(await SavedDataCardHeaderTestkit.title()).toEqual('Saved data');
+    expect(await SavedDataCardHeaderTestkit.title()).toEqual("Saved data");
   });
 
-  it('should not submit the form if required field is missing', async () => {
+  it("should not submit the form if required field is missing", async () => {
     const { baseElement } = render(<App />);
 
     const firstNameInputTestkit = InputTestkit({
@@ -59,20 +60,20 @@ describe('App', () => {
       dataHook: "submitButton",
     });
 
-    await firstNameInputTestkit.enterText('Ugne');
+    await firstNameInputTestkit.enterText("Ugne");
     await colorDropdownTestkit.driver.selectOptionById(2);
 
     await submitButtonTestkit.click();
 
-    const SavedDataCardHeaderTestkit = CardHeaderTestkit({
+    const savedDataCardHeaderTestkit = CardHeaderTestkit({
       wrapper: baseElement,
       dataHook: "savedDataHeader",
     });
 
-    expect(await SavedDataCardHeaderTestkit.title()).not.toEqual('Saved data');
+    expect(await savedDataCardHeaderTestkit.exists()).toEqual(false);
   });
 
-  it('should clesr the form when clear button is pressed', async () => {
+  it("should clesr the form when clear button is pressed", async () => {
     const { baseElement } = render(<App />);
 
     const firstNameInputTestkit = InputTestkit({
@@ -92,17 +93,14 @@ describe('App', () => {
       dataHook: "clearButton",
     });
 
-    await firstNameInputTestkit.enterText('Ugne');
-    await lastNameInputTestkit.enterText('Trakimaite');
+    await firstNameInputTestkit.enterText("Ugne");
+    await lastNameInputTestkit.enterText("Trakimaite");
     await colorDropdownTestkit.driver.selectOptionById(2);
 
     await clearButtonTestkit.click();
 
-    const SavedDataCardHeaderTestkit = CardHeaderTestkit({
-      wrapper: baseElement,
-      dataHook: "savedDataHeader",
-    });
-
-    expect(await SavedDataCardHeaderTestkit.title()).not.toEqual('Saved data');
+    expect(await firstNameInputTestkit.getValue()).toEqual("");
+    expect(await lastNameInputTestkit.getValue()).toEqual("");
+    expect(await colorDropdownTestkit.inputDriver.getValue()).toEqual("");
   });
 });
